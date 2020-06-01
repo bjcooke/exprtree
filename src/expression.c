@@ -194,7 +194,7 @@ static syntax_tree_t *_assignment_expression( token_t **tokens ) {
   syntax_tree_t *tree, *lbranch, *rbranch;
   operator_token_t *op;
 
-	tree = NULL;
+  tree = NULL;
 
 
   /* rvalues are allowed on lhs during syntax analysis */

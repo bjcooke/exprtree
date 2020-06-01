@@ -222,10 +222,10 @@ static void evalopts( int argc, char * const argv[], bool *v, char **fn ) {
   visualopt.flag = NULL;
   visualopt.val = 'p';
 
-	*v= true;
+  *v= true;
 
   while ( (ch = getopt_long( argc, argv, optstring, &visualopt, NULL )) > 0 ) {
-		/* Non-visual parentheses mode */
+    /* Non-visual parentheses mode */
     if ( ch == 'p' ) {
       *v = false;
     }
