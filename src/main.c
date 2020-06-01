@@ -246,7 +246,7 @@ int main( int argc, char **argv ) {
 
   syntax_tree_t *tree;
   FILE *input_stream;
-  char *buf, *filename, *term_name, term_data[2048], **screen_buffer, *ch;
+  char *buf, *filename, *term_name, term_data[TBUFSIZE], **screen_buffer, *ch;
   int status, i;
   bool visual_mode;
 
