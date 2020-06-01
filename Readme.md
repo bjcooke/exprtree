@@ -12,7 +12,7 @@ Bash:
 
 Posix Shell:
 
-	echo "(7+8)*9)" | ./exprtree
+	echo "(7+8)*9" | ./exprtree
 
 
 File:
