@@ -1,0 +1,32 @@
+#!@AWK@ -f
+
+
+BEGIN {
+  FS="[:\t]*"
+
+  count = 1
+
+  printf("#ifndef _TOKENID_H\n")
+  printf("#define _TOKENID_H\n\n")
+
+  printf("typedef enum {\n\n")
+  printf("\t_EOF_TOKEN_ = 0,\n")
+}
+
+/^([A-Za-z_][A-Za-z0-9_]*):?/ {
+  id[count++] = sprintf("%s_TOKEN = %d", toupper($1), count)
+}
+
+END {
+  for (i = 1; i <= count; i++) {
+    if ( (i+1) < count ) {
+      printf("\t%s,\n", id[i])
+    }
+    else {
+      printf("\t%s\n", id[i])
+    }
+  }
+
+  printf("\n} tokenid_t;\n")
+  printf("\n#endif\n")
+}

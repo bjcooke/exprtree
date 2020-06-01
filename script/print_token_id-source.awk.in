@@ -1,0 +1,32 @@
+#!@AWK@ -f
+
+BEGIN {
+  FS="[:\t]*"
+  count = 0;
+
+  system("cat src/template/print_token_id.c.head")
+  system("")
+
+  printf("static const char *_id_table[] = {\n")
+  printf("\t\"EOF\",\n")
+}
+
+/^([A-Za-z_][A-Za-z0-9_]*):?/ {
+  name[++count] = sprintf("\t\"%s\"", $1)
+}
+
+END {
+  for (i = 1; i <= count; i++) {
+    if ( i < count ) {
+      printf("%s,\n", name[i])
+    }
+    else {
+      printf("%s\n", name[i])
+    }
+  }
+
+  printf("};\n")
+
+  system("cat src/template/print_token_id.c.tail")
+  system("")
+}

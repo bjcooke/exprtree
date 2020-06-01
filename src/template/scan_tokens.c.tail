@@ -1,0 +1,16 @@
+    else {
+      fprintf(stderr, "Unrecognized token at line %u\n", linecount);
+      free( tokenlist );
+      return NULL;
+    }
+  }
+
+  /* EOF */
+  tokenlist[*n].token.id = _EOF_TOKEN_;
+  tokenlist[*n].token.size = 0;
+  tokenlist[*n].token.location = s;
+
+
+  return tokenlist;
+
+}

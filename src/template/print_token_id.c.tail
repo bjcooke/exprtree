@@ -1,0 +1,16 @@
+
+
+size_t fprint_token_id( FILE *stream, const token_t *t ) {
+
+  const char **s = ( _id_table + t->token.id );
+
+  return fwrite( *s, sizeof(char), strlen(*s), stream );
+
+}
+
+
+size_t print_token_id( const token_t *t ) {
+
+  return fprint_token_id( stdout, t );
+
+}

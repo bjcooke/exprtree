@@ -1,0 +1,37 @@
+#!@AWK@ -f
+
+BEGIN {
+  FS="[:,\t]*"
+
+  system("cat src/template/scan_tokens.c.head")
+  system("")
+}
+
+/^([A-Za-z_][A-Za-z0-9_]*):?/ {
+  SED="@SED@ -f script/scan_tokens-source.sed"
+
+  printf("    else if ( ( len = match_%s(s", $1)
+
+  for (i = 2; i <= NF; i++) {
+    printf(", &(tokenlist[*n].%s.", $1);
+    printf("%s", $i) | SED
+    close(SED)
+    printf(")")
+  }
+
+  printf(") ) != 0 ) {\n\n");
+
+  printf("      tokenlist[*n].token.id = %s_TOKEN;\n", toupper($1))
+  printf("      tokenlist[*n].token.size     = len;\n")
+  printf("      tokenlist[*n].token.location = s;\n\n")
+
+  printf("      (*n)++;\n")
+  printf("      s += len;\n\n")
+
+  printf("    }\n")
+}
+
+END {
+  system("cat src/template/scan_tokens.c.tail")
+  system("")
+}

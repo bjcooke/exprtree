@@ -1,0 +1,14 @@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+>>>>List of token names and attributes in order of highest precedence first<<<<<
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+number:		unsigned int base,	bool fp
+operator:	unsigned int arity,	int prec,	assoc_t asv,	bool post
+ident
+sep
+colon
+lparen
+rparen
+lbracket
+rbracket

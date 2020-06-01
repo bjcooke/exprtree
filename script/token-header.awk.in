@@ -1,0 +1,53 @@
+#!@AWK@ -f
+
+BEGIN {
+  FS="[:,\t]*"
+  printf("#ifndef _TOKEN_H\n")
+  printf("#define _TOKEN_H\n\n")
+
+	printf("#include <stdbool.h>\n")
+  printf("#include <stdint.h>\n")
+  printf("#include <stdio.h>\n")
+  printf("#include <mpfr.h>\n")
+  printf("#include \"assoc.h\"\n")
+  printf("#include \"tokenid.h\"\n\n\n")
+
+  printf("struct token_type_header {\n")
+  printf("\ttokenid_t id;\n")
+  printf("\tunsigned int size;\n")
+  printf("\tconst char *location;\n};\n\n\n")
+}
+
+/^([A-Za-z_][A-Za-z0-9_]*):?/ {
+  printf("typedef struct {\n");
+  printf("\tstruct token_type_header token;\n")
+
+  for ( i = 2; i <= NF; i++ ) {
+    printf("\t%s;\n", $i)
+  }
+
+  type[$1] = sprintf("%s_token_t", $1)
+  printf("} %s;\n\n", type[$1])
+}
+
+END {
+  printf("\ntypedef union {\n")
+  printf("\tstruct token_type_header token;\n")
+
+  for (token in type) {
+    printf("\t%s %s;\n", type[token], token)
+  }
+
+  printf("} token_t;\n\n\n")
+
+  printf("extern size_t print_token_id( const token_t *t );\n")
+  printf("extern size_t fprint_token_id( FILE *stream, const token_t *t );\n")
+  printf("extern size_t print_token( const token_t *t );\n")
+  printf("extern size_t fprint_token( FILE *stream, const token_t *t );\n")
+  printf("extern size_t sprint_token( char **buffer, const token_t *t );\n")
+  printf("extern int token_to_mpf( const token_t *token, mpfr_t value );\n")
+  printf("extern int token_to_i32( const token_t *token, int32_t *value );\n")
+  printf("extern int token_to_i64( const token_t *token, int64_t *value );\n")
+
+  printf("\n#endif\n")
+}

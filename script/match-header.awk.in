@@ -1,0 +1,34 @@
+#!@AWK@ -f
+
+BEGIN {
+  FS="[:,\t]*"
+  printf("#ifndef _MATCH_H\n")
+  printf("#define _MATCH_H\n\n")
+  printf("#include <stdbool.h>\n")
+  printf("#include \"assoc.h\"\n\n")
+}
+
+/^([A-Za-z_][A-Za-z0-9_]*):?/ {
+  SED="@SED@ -E -f script/match-header.sed"
+
+  printf("extern unsigned int match_")
+
+  if ( NF == 1 ) {
+    printf("%s(const char *s);\n", $1)
+  }
+  else {
+    printf("%s(const char *s", $1)
+
+    for ( i = 2; i <= NF; i++ ) {
+      printf(",%s", $i) | SED
+      close( SED )
+    }
+
+    printf(");\n");
+  }
+
+}
+
+END {
+  printf("\n#endif\n")
+}

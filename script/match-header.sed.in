@@ -1,0 +1,2 @@
+#!@SED@ -E -f
+s/^,(unsigned *|long *)?([A-Za-z_][A-Za-z0-9_]*) *([A-Za-z_][A-Za-z0-9_]*)$/, \1\2\* \3/
