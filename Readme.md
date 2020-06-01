@@ -29,6 +29,11 @@ build commands:
 	make
 
 
+cleanup:
+
+	make distclean
+
+
 # Dependencies #
 * gmp
 * mpfr
