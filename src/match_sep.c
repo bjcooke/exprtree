@@ -1,6 +1,6 @@
-unsigned int match_colon( const char *s ) {
+unsigned int match_sep( const char *s ) {
 
-  if ( *s == ':' ) {
+  if ( *s == ';' ) {
     return 1;
   }
   else {
