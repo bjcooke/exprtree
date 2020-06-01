@@ -7,12 +7,12 @@ the syntax tree.
 # How to run #
 Bash:
 
-	./exprtree <<<"(7+8)*9"
+	./exprtree <<<"(7+8)*9/2"
 
 
 Posix Shell:
 
-	echo "(7+8)*9" | ./exprtree
+	echo "(7+8)*9/2" | ./exprtree
 
 
 File:
