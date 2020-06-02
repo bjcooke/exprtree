@@ -46,5 +46,6 @@ cleanup:
 * No union or struct accessing
 * No typecasting
 * No comma operator
+* No unary `+` operator
 * No `sizeof` macro
 
