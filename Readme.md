@@ -7,12 +7,12 @@ the syntax tree.
 # How to run #
 Bash:
 
-	./exprtree <<<"(7+8)*9/2"
+	./exprtree <<<"6+7*8/2+*a"
 
 
 Posix Shell:
 
-	echo "(7+8)*9/2" | ./exprtree
+	echo "6+7*8/2+*a" | ./exprtree
 
 
 File:
@@ -35,8 +35,6 @@ cleanup:
 
 
 # Dependencies #
-* gmp
-* mpfr
 * terminfo/termcap (ncurses is just fine)
 
 

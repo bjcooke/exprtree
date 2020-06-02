@@ -8,7 +8,6 @@ BEGIN {
 	printf("#include <stdbool.h>\n")
   printf("#include <stdint.h>\n")
   printf("#include <stdio.h>\n")
-  printf("#include <mpfr.h>\n")
   printf("#include \"assoc.h\"\n")
   printf("#include \"tokenid.h\"\n\n\n")
 
@@ -45,9 +44,6 @@ END {
   printf("extern size_t print_token( const token_t *t );\n")
   printf("extern size_t fprint_token( FILE *stream, const token_t *t );\n")
   printf("extern size_t sprint_token( char **buffer, const token_t *t );\n")
-  printf("extern int token_to_mpf( const token_t *token, mpfr_t value );\n")
-  printf("extern int token_to_i32( const token_t *token, int32_t *value );\n")
-  printf("extern int token_to_i64( const token_t *token, int64_t *value );\n")
 
   printf("\n#endif\n")
 }

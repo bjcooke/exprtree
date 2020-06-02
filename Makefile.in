@@ -13,9 +13,6 @@ ascript=$(wildcard @srcdir@/script/*-source.awk)
 dycsrc=$(ascript:@srcdir@/script/%-source.awk=@srcdir@/src/%.c)
 csrc=$(sort $(wildcard @srcdir@/src/*.c) $(dycsrc))
 obj=$(csrc:@srcdir@/src/%.c=./%.o)
-tsrc=$(wildcard @srcdir@/test/*.c)
-tobj=$(tsrc:@srcdir@/test/%.c=./test/%.o)
-texe=$(tobj:.o=)
 
 
 all:	exprtree
@@ -26,14 +23,11 @@ exprtree:	./main.o $(obj)
 help:
 	@ $(PRINTF) "Options:\n\n"
 	@ $(PRINTF) "\tall\n"
-	@ $(PRINTF) "\ttest\n"
 	@ $(PRINTF) "\theaders\n"
 	@ $(PRINTF) "\tsource\n"
 	@ $(PRINTF) "\tclean\n"
 	@ $(PRINTF) "\n"
 
-
-test:		$(texe)
 
 headers:	$(hdr)
 
@@ -53,28 +47,16 @@ source:		$(dycsrc)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@$(PRINTF) "CC\t$(notdir $<)\n\t|\n\t*=> $(notdir $@)\n\n"
 
-./test:
-	@test -d $@ || $(MKDIR) $@
-./test/%:		@srcdir@/test/%.c source headers $(obj)
-	@$(CC) $(CFLAGS) -c $< -o $@.o
-	@$(PRINTF) "CC\t$(notdir $<)\n\t|\n\t*=> $(notdir $@.o)\n\n"
-	@$(LD) $(LDFLAGS) -o $@ $@.o $(obj) $(TESTLIBS)
-	@$(PRINTF) "LD\t$(notdir $@)\n\n"
-
 
 clean:
 	@$(RM) -f $(wildcard exprtree)
 	@$(RM) -f $(wildcard $(hdr))
 	@$(RM) -f $(wildcard $(dycsrc))
 	@$(RM) -f $(wildcard $(obj))
-	@$(RM) -f $(wildcard $(tobj))
-	@$(RM) -f $(wildcard $(texe))
 	@$(PRINTF) "RM\t%s\n" \
 		$(notdir $(wildcard $(hdr))) \
 		$(notdir $(wildcard $(dycsrc))) \
-		$(notdir $(wildcard $(obj))) \
-		$(notdir $(wildcard $(tobj))) \
-		$(notdir $(wildcard $(texe)))
+		$(notdir $(wildcard $(obj)))
 
 distclean:	clean
 	$(RM) -rf Makefile configure config.status config.log autom4te.cache/ \

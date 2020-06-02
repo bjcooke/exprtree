@@ -1,1 +1,1 @@
-(7+8) * 9 / 2 ; Stops reading at semicolon or EOF
+6+7*8/2+*a;Stops parsing at semicolon or EOF

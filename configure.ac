@@ -13,10 +13,10 @@ AC_PATH_PROG(find,[find])
 AC_PATH_PROG(pkgconf,[pkg-config])
 dnl
 AC_HEADER_STDC
-AC_CHECK_HEADERS([stdbool.h gmp.h mpfr.h term.h])
+AC_CHECK_HEADERS([stdbool.h term.h])
 dnl
 [
-LIBS="$LIBS -lgmp -lmpfr `$ac_cv_path_pkgconf --libs tinfo`"
+LIBS="$LIBS `$ac_cv_path_pkgconf --libs tinfo`"
 ]
 dnl
 AC_CONFIG_FILES([
