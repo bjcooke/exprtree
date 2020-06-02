@@ -20,6 +20,9 @@ File:
 	./exprtree < example.txt
 
 
+![Example](/example.png)
+
+
 # How to Build #
 
 build commands:
