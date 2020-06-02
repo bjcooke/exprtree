@@ -16,12 +16,6 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([stdbool.h gmp.h mpfr.h term.h])
 dnl
 [
-lib_path=\
-`
-	$CC -Xlinker --verbose 2>&1 |
-	$ac_cv_path_SED -n 's/SEARCH_DIR("=\([A-Za-z0-9_/-]\+\)");/\1/gp'
-`
-
 LIBS="$LIBS -lgmp -lmpfr `$ac_cv_path_pkgconf --libs tinfo`"
 ]
 dnl
