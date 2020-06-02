@@ -1,4 +1,4 @@
-AC_INIT([bjcalc], [0.1], [bcooke@fofk.org])
+AC_INIT([exprtree], [0.1], [bcooke@fofk.org])
 dnl
 AC_CONFIG_SRCDIR([src/])
 dnl

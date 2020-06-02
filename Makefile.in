@@ -18,11 +18,14 @@ tobj=$(tsrc:@srcdir@/test/%.c=./test/%.o)
 texe=$(tobj:.o=)
 
 
+all:	exprtree
+
 exprtree:	./main.o $(obj)
 	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 help:
 	@ $(PRINTF) "Options:\n\n"
+	@ $(PRINTF) "\tall\n"
 	@ $(PRINTF) "\ttest\n"
 	@ $(PRINTF) "\theaders\n"
 	@ $(PRINTF) "\tsource\n"
