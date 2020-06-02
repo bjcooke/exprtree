@@ -22,7 +22,7 @@ lib_path=\
 	$ac_cv_path_SED -n 's/SEARCH_DIR("=\([A-Za-z0-9_/-]\+\)");/\1/gp'
 `
 
-LIBS="$LIBS `$ac_cv_path_pkgconf --libs tinfo gmp mpfr`"
+LIBS="$LIBS -lgmp -lmpfr `$ac_cv_path_pkgconf --libs tinfo`"
 ]
 dnl
 AC_CONFIG_FILES([
