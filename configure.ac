@@ -8,7 +8,6 @@ AC_PATH_PROG(AWK,[awk])
 AC_PATH_PROG(PRINTF,[printf])
 AC_PATH_PROG(RM,[rm])
 AC_PATH_PROG(SED,[sed])
-AC_PATH_PROG(find,[find])
 AC_PATH_PROG(pkgconf,[pkg-config])
 dnl
 AC_HEADER_STDC
