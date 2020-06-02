@@ -216,7 +216,7 @@ static syntax_tree_t *_assignment_expression( token_t **tokens ) {
   if ( op->prec == ASSIGN_PREC && op->arity == 2 ) {
 
     (*tokens)++;
-    rbranch = _assignment_expression( tokens );
+    rbranch = _ternary_expression( tokens );
 
     if ( rbranch == NULL ) {
       fprintf( stderr, "Error: rvalue not found\n" );
