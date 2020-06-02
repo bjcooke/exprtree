@@ -35,7 +35,7 @@ cleanup:
 
 
 # Dependencies #
-* terminfo/termcap (ncurses is just fine)
+* terminfo (ncurses is fine)
 
 
 # Limitations #
