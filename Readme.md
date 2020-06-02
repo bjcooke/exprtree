@@ -43,4 +43,5 @@ cleanup:
 # Limitations #
 
 * Does not semantically check left operand of assignment operator. Multiple assignment operators not bounded by parentheses will cause undefined behavior.
-* function calls are not valid operands (only valid variable names and literals)
+* Function calls are not valid operands. (only valid variable names and literals)
+* Array dereferences are not valid operators. (only pointer dereferencing)
