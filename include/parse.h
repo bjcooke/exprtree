@@ -11,6 +11,5 @@ extern void parse_clear( void );
 extern void expect( const token_t **tokens, tokenid_t id );
 
 extern syntax_tree_t *expression( token_t **tokens );
-extern syntax_tree_t *statement( token_t **tokens );
 
 #endif
