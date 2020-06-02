@@ -5,7 +5,6 @@ dnl
 AC_PROG_CC
 dnl
 AC_PATH_PROG(AWK,[awk])
-AC_PATH_PROG(MKDIR,[mkdir])
 AC_PATH_PROG(PRINTF,[printf])
 AC_PATH_PROG(RM,[rm])
 AC_PATH_PROG(SED,[sed])
