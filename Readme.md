@@ -41,10 +41,10 @@ cleanup:
 # Limitations #
 
 * Does not semantically check left operand of assignment operator.
-* Function calls are not valid operands. (only valid variable names and literals)
-* Array dereferences are not valid operators. (only pointer dereferencing)
+* No function calls
+* No array dereferencing
 * No union or struct accessing
 * No typecasting
 * No comma operator
-* No sizeof macro
+* No `sizeof` macro
 
