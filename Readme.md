@@ -4,6 +4,24 @@ Reads a c-like expression from standard input and prints a visual depiction of
 the syntax tree.
 
 
+# How to Build #
+
+build commands:
+
+	./autogen.sh
+	./configure
+	make
+
+
+cleanup:
+
+	make distclean
+
+
+# Dependencies #
+* terminfo (ncurses is fine)
+
+
 # How to run #
 Bash:
 
@@ -21,24 +39,6 @@ File:
 
 
 ![Example](/example.png)
-
-
-# How to Build #
-
-build commands:
-
-	./autogen.sh
-	./configure
-	make
-
-
-cleanup:
-
-	make distclean
-
-
-# Dependencies #
-* terminfo (ncurses is fine)
 
 
 # Limitations #
