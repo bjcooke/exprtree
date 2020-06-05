@@ -61,7 +61,7 @@ static syntax_tree_t *_unary_expression( token_t **tokens ) {
   else if ( (*tokens)->token.id == LPAREN_TOKEN ) {
 
     (*tokens)++;
-    tree = _assignment_expression( tokens );
+    tree = _compound_expression( tokens );
 
     expect( (const token_t **) tokens, RPAREN_TOKEN );
 
