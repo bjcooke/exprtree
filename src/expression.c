@@ -20,6 +20,7 @@ static syntax_tree_t *_unary_expression( token_t **tokens ) {
 
   syntax_tree_t *tree, *branch;
   operator_token_t *op;
+	token_t *square_bracket;
 
 
   /* rewrite minus operator to be unary */
@@ -76,6 +77,13 @@ static syntax_tree_t *_unary_expression( token_t **tokens ) {
   else {
     tree = NULL;
   }
+
+
+  if ( tree != NULL && (*tokens)->token.id == LSQUARE_TOKEN ) {
+		square_bracket = (*tokens)++;
+    tree = ST_mknode( square_bracket, tree, _compound_expression( tokens ) );
+		expect( (const token_t **) tokens, RSQUARE_TOKEN );
+	}
 
 
   return tree;
@@ -249,14 +257,14 @@ static syntax_tree_t *_assignment_expression( token_t **tokens ) {
 static syntax_tree_t *_compound_expression( token_t **tokens ) {
 
   syntax_tree_t *tree;
-	token_t *comma;
+  token_t *comma;
 
   tree = _assignment_expression( tokens );
 
 
   if ( tree != NULL ) {
     while ( (*tokens)->token.id == COMMA_TOKEN ) {
-			comma = (*tokens)++;
+      comma = (*tokens)++;
       tree = ST_mknode( comma, tree, _assignment_expression(tokens) );
     }
   }

@@ -9,7 +9,9 @@ ident
 comma
 colon
 semicolon
-lparen
-rparen
 lbracket
 rbracket
+lparen
+rparen
+lsquare
+rsquare

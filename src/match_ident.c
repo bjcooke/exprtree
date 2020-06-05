@@ -29,7 +29,7 @@ unsigned int match_ident( const char *s )
 
             /* Unknown State */
             default:
-                return (-1);
+                return 0;
 
         }
     }

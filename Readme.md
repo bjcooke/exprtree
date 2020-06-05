@@ -49,7 +49,6 @@ File:
 
 * Does not semantically check left operand of assignment operator.
 * No function calls
-* No array dereferencing
 * No union or struct accessing
 * No typecasting
 * No unary `+` operator
