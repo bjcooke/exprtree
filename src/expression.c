@@ -13,6 +13,7 @@ static syntax_tree_t *_unary_expression(token_t **tokens);
 static syntax_tree_t *_binary_expression(token_t **tokens, unsigned int prec);
 static syntax_tree_t *_ternary_expression(token_t **tokens);
 static syntax_tree_t *_assignment_expression(token_t **tokens);
+static syntax_tree_t *_compound_expression(token_t **tokens);
 
 
 static syntax_tree_t *_unary_expression( token_t **tokens ) {
@@ -245,12 +246,33 @@ static syntax_tree_t *_assignment_expression( token_t **tokens ) {
 }
 
 
+static syntax_tree_t *_compound_expression( token_t **tokens ) {
+
+  syntax_tree_t *tree;
+	token_t *comma;
+
+  tree = _assignment_expression( tokens );
+
+
+  if ( tree != NULL ) {
+    while ( (*tokens)->token.id == COMMA_TOKEN ) {
+			comma = (*tokens)++;
+      tree = ST_mknode( comma, tree, _assignment_expression(tokens) );
+    }
+  }
+
+
+  return tree;
+
+}
+
+
 syntax_tree_t *expression( token_t **tokens ) {
 
   syntax_tree_t *tree;
 
 
-  tree = _assignment_expression(tokens);
+  tree = _compound_expression(tokens);
 
 
   return tree;

@@ -73,7 +73,7 @@ syntax_tree_t *parse_start( const char *s ) {
   parse_tree_head.head_node = expression( &tokens );
 
   if ( tokens->token.id != _EOF_TOKEN_ ) {
-    expect( (const token_t **) &tokens, SEP_TOKEN );
+    expect( (const token_t **) &tokens, SEMICOLON_TOKEN );
   }
 
   return parse_tree_head.head_node;
