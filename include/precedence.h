@@ -16,6 +16,7 @@
 #define	LNOT_PREC	  12
 #define	BNOT_PREC	  12
 #define NEG_PREC	  12
+#define POS_PREC	  12
 #define	INC_PREC	  12
 #define	REF_PREC	  12
  

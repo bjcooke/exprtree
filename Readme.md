@@ -48,9 +48,9 @@ File:
 # Limitations #
 
 * Does not semantically check left operand of assignment operator.
+* No type checking of array subscript
 * No function calls
 * No union or struct accessing
 * No typecasting
-* No unary `+` operator
 * No `sizeof` macro
 
