@@ -1,7 +1,7 @@
 CC=@CC@
-CFLAGS=-Wall -ansi -pedantic -Wno-variadic-macros -iquote @srcdir@/include @CFLAGS@
+CFLAGS=-iquote @srcdir@/include @CFLAGS@
 LD=@CC@
-LDFLAGS=-Wall -ansi -pedantic @LDFLAGS@
+LDFLAGS=@LDFLAGS@
 LIBS=@LIBS@
 AWK=@AWK@
 PRINTF=@PRINTF@

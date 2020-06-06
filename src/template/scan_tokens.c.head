@@ -6,7 +6,7 @@
 #include "token.h"
 
 
-#if !defined(_ISO_C99_SOURCE) || _XOPEN_SOURCE<600 || _POSIX_C_SOURCE<200112L
+#if __STDC_VERSION__<199901L || _POSIX_C_SOURCE<200112L
 #define isblank(c) ( ((c) == 0x9) || ((c) == 0x20) )
 #endif
 
