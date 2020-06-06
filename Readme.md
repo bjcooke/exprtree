@@ -15,6 +15,10 @@ build commands:
 
 cleanup:
 
+	make clean
+
+or
+
 	make distclean
 
 
