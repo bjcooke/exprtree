@@ -6,14 +6,14 @@ the syntax tree.
 
 # How to Build #
 
-build commands:
+### build commands ###
 
 	./autogen.sh
 	./configure
 	make
 
 
-cleanup:
+### cleanup ###
 
 	make clean
 
@@ -27,17 +27,17 @@ or
 
 
 # How to run #
-Bash:
+### Bash ###
 
 	./exprtree <<<"6+7*8/2+*a"
 
 
-Posix Shell:
+### Posix Shell ###
 
 	echo "6+7*8/2+*a" | ./exprtree
 
 
-File:
+### File ###
 
 	./exprtree < example.txt
 
