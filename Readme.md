@@ -6,14 +6,14 @@ the syntax tree.
 
 # How to Build #
 
-### build commands ###
+### Build Commands ###
 
 	./autogen.sh
 	./configure
 	make
 
 
-### cleanup ###
+### Cleanup ###
 
 	make clean
 
