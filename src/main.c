@@ -280,7 +280,7 @@ int main( int argc, char **argv ) {
   syntax_tree_t *tree;
   FILE *input_stream;
   char *buf, *filename, *term_name, term_data[TBUFSIZE], **screen_buffer, *ch;
-  int status, i;
+  int i;
   bool visual_mode;
 
 
@@ -317,9 +317,6 @@ int main( int argc, char **argv ) {
   }
 
 
-  status = 0;
-
-
   if ( visual_mode ) {
 
     term_name = getenv("TERM");
@@ -328,7 +325,7 @@ int main( int argc, char **argv ) {
          tgetent( term_data, term_name ) != 1 ||
          ( TERM_WIDTH = tgetnum("co") ) == -1 ||
          ( TERM_HEIGHT = tgetnum("li") ) == -1 ) {
-      status = 1;
+      return 1;
     }
 
 
@@ -376,6 +373,6 @@ int main( int argc, char **argv ) {
   buf = NULL;
 
 
-  return status;
+  return 0;
 
 }
