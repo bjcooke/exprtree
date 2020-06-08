@@ -217,7 +217,7 @@ static int evalopts( int argc, char * const argv[], bool *v, char **e, char **fn
   char *expopt_name = "expression";
   char *fileopt_name = "file";
   char *optstring = "+e:f:p";
-  char *usage_fmt = "Usage: %s [-p|--paren] [[-e|--expression] exp] [file]\n";
+  char *usage_fmt = "Usage: %s [-p|--paren] [[-e|--expression] exp] [[-f|--file] file]\n";
   int ch;
 
   optv[0].name = visualopt_name;
