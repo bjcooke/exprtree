@@ -14,7 +14,7 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([getopt.h stdbool.h term.h])
 dnl
 [
-CFLAGS="$CFLAGS -O2 -Wall -pedantic"
+CFLAGS="$CFLAGS -Wall -pedantic"
 LDFLAGS="$LDFLAGS -Wall -pedantic"
 LIBS="$LIBS `$ac_cv_path_pkgconf --libs tinfo`"
 ]
