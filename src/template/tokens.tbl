@@ -8,8 +8,6 @@ operator:	unsigned int arity,	int prec,	assoc_t asv,	bool post
 ident
 comma
 colon
-lbracket
-rbracket
 lparen
 rparen
 lsquare

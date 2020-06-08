@@ -16,67 +16,6 @@ int TERM_WIDTH;
 int TERM_HEIGHT;
 
 
-static void print_tree( syntax_tree_t *node ) {
-
-  syntax_tree_t *tit;
-  int i;
-
-
-  if ( node == NULL ) {
-    return;
-  }
-
-
-  if ( ST_isleaf(node) ) {
-
-    print_token( node->t );
-
-  }
-  else if ( node->t->token.id == LBRACKET_TOKEN ) {
-
-    putchar('{');
-
-    for ( tit = node; tit != NULL; tit = tit->subtree[1] ) {
-
-      print_tree( tit->subtree[0] );
-
-    }
-
-    putchar('}');
-
-  }
-  else if ( node->t->token.id == OPERATOR_TOKEN ) {
-
-    putchar('(');
-
-    if ( node->t->operator.arity == 1  && node->t->operator.post == false ) {
-      print_token(node->t);
-    }
-
-    for ( i = 0; i < node->t->operator.arity; i++ ) {
-
-      if ( i == 1 ) {
-        print_token(node->t);
-      }
-      else if ( i == 2 ) {
-        putchar(':');
-      }
-
-      print_tree(node->subtree[i]);
-
-    }
-
-    if ( node->t->operator.arity == 1  && node->t->operator.post == true ) {
-      print_token(node->t);
-    }
-
-    putchar(')');
-
-  }
-
-}
-
-
 static void plot_tree( syntax_tree_t *node,
                 char ** const scrbuf,
                 int width,
@@ -210,40 +149,30 @@ static void plot_tree( syntax_tree_t *node,
 }
 
 
-static int evalopts( int argc, char * const argv[], bool *v, char **e, char **fn ) {
+static int evalopts( int argc, char * const argv[], char **e, char **fn ) {
 
-  struct option optv[3];
-  char *visualopt_name = "paren";
+  struct option optv[2];
   char *expopt_name = "expression";
   char *fileopt_name = "file";
-  char *optstring = "+e:f:p";
-  char *usage_fmt = "Usage: %s [-p|--paren] [[-e|--expression] exp] [[-f|--file] file]\n";
+  char *optstring = "+e:f:";
+  char *usage_fmt = "Usage: %s [[-e|--expression] exp] [[-f|--file] file]\n";
   int ch;
 
-  optv[0].name = visualopt_name;
-  optv[0].has_arg = 0;
-  optv[0].flag = NULL;
-  optv[0].val = 'p';
 
-  optv[1].name = expopt_name;
+  optv[0].name = expopt_name;
+  optv[0].has_arg = 1;
+  optv[0].flag = NULL;
+  optv[0].val = 'e';
+
+  optv[1].name = fileopt_name;
   optv[1].has_arg = 1;
   optv[1].flag = NULL;
-  optv[1].val = 'e';
+  optv[1].val = 'f';
 
-  optv[2].name = fileopt_name;
-  optv[2].has_arg = 1;
-  optv[2].flag = NULL;
-  optv[2].val = 'f';
-
-  *v = true;
 
   while ( (ch = getopt_long( argc, argv, optstring, optv, NULL )) > 0 ) {
 
     switch ( ch ) {
-      case 'p':
-        *v = false;
-        break;
-
       case 'e':
         *e = malloc( sizeof(char) * (strlen(optarg) + 1) );
         memcpy( *e, optarg, sizeof(char) * (strlen(optarg) + 1) );
@@ -281,13 +210,12 @@ int main( int argc, char **argv ) {
   FILE *input_stream;
   char *buf, *filename, *term_name, term_data[TBUFSIZE], **screen_buffer, *ch;
   int i;
-  bool visual_mode;
 
 
   buf = NULL;
   filename = NULL;
 
-  if ( evalopts( argc, argv, &visual_mode, &buf, &filename ) != 0 ) {
+  if ( evalopts( argc, argv, &buf, &filename ) != 0 ) {
     return 1;
   }
 
@@ -317,54 +245,46 @@ int main( int argc, char **argv ) {
   }
 
 
-  if ( visual_mode ) {
+  term_name = getenv("TERM");
 
-    term_name = getenv("TERM");
-
-    if ( term_name == NULL ||
-         tgetent( term_data, term_name ) != 1 ||
-         ( TERM_WIDTH = tgetnum("co") ) == -1 ||
-         ( TERM_HEIGHT = tgetnum("li") ) == -1 ) {
-      return 1;
-    }
-
-
-    screen_buffer = (char **) malloc( sizeof(char *) * TERM_HEIGHT );
-
-    for ( i = 0; i < TERM_HEIGHT; i++ ) {
-      screen_buffer[i] = (char *) malloc( sizeof(char) * TERM_WIDTH );
-      screen_buffer[i][0] = '\0';
-      memset( screen_buffer[i] + 1, 0x3, sizeof(char) * (TERM_WIDTH - 1) );
-    }
-
-
-    plot_tree(tree, screen_buffer, TERM_WIDTH, TERM_WIDTH/2, 0);
-
-    putchar('\n');
-
-    for ( i = 0; i < TERM_HEIGHT; i++ ) {
-      for ( ch = screen_buffer[i] + TERM_WIDTH; *(ch - 1) == 0x3; ch-- );
-      ch[0] = '\n';
-      ch[1] = '\0';
-      printf("%s", screen_buffer[i]);
-    }
-
-    putchar('\n');
-
-
-    for ( i = 0; i < TERM_HEIGHT; i++ ) {
-      free( screen_buffer[i] );
-      screen_buffer[i] = NULL;
-    }
-
-    free( screen_buffer );
-    screen_buffer = NULL;
-
+  if ( term_name == NULL ||
+       tgetent( term_data, term_name ) != 1 ||
+       ( TERM_WIDTH = tgetnum("co") ) == -1 ||
+       ( TERM_HEIGHT = tgetnum("li") ) == -1 ) {
+    return 1;
   }
-  else {
-    print_tree( tree );
-    putchar('\n');
+
+
+  screen_buffer = (char **) malloc( sizeof(char *) * TERM_HEIGHT );
+
+  for ( i = 0; i < TERM_HEIGHT; i++ ) {
+    screen_buffer[i] = (char *) malloc( sizeof(char) * TERM_WIDTH );
+    screen_buffer[i][0] = '\0';
+    memset( screen_buffer[i] + 1, 0x3, sizeof(char) * (TERM_WIDTH - 1) );
   }
+
+
+  plot_tree(tree, screen_buffer, TERM_WIDTH, TERM_WIDTH/2, 0);
+
+  putchar('\n');
+
+  for ( i = 0; i < TERM_HEIGHT; i++ ) {
+    for ( ch = screen_buffer[i] + TERM_WIDTH; *(ch - 1) == 0x3; ch-- );
+    ch[0] = '\n';
+    ch[1] = '\0';
+    printf("%s", screen_buffer[i]);
+  }
+
+  putchar('\n');
+
+
+  for ( i = 0; i < TERM_HEIGHT; i++ ) {
+    free( screen_buffer[i] );
+    screen_buffer[i] = NULL;
+  }
+
+  free( screen_buffer );
+  screen_buffer = NULL;
 
 
   parse_clear();
