@@ -1,1 +1,1 @@
-6+7*8/2+*a;Stops parsing at semicolon or EOF
+6+7*8/2+*a; Stops reading at semicolon or EOF
