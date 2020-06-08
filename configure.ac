@@ -11,7 +11,7 @@ AC_PATH_PROG(SED,[sed])
 AC_PATH_PROG(pkgconf,[pkg-config])
 dnl
 AC_HEADER_STDC
-AC_CHECK_HEADERS([stdbool.h term.h])
+AC_CHECK_HEADERS([getopt.h stdbool.h term.h])
 dnl
 [
 CFLAGS="$CFLAGS -O2 -Wall -pedantic"
