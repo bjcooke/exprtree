@@ -6,60 +6,65 @@
 #define MEM_OFFSET 32
 
 
-char *lazy_read( FILE *stream ) {
+static int resize( char **buf, size_t *cap ) {
 
-  char *buf, *tmp;
-  size_t capacity, memdiff, bcount;
+  char *tmp;
 
+  tmp = malloc( (*cap+MEM_OFFSET)*2 - MEM_OFFSET );
 
-  capacity = BASE_CAPACITY - MEM_OFFSET;
-  memdiff = capacity;
-  buf = (char *) malloc( sizeof(char) * capacity );
-  tmp = NULL;
-
-  if ( buf == NULL ) {
-    return NULL;
+  if ( tmp == NULL ) {
+    return 1;
   }
 
-  while ( (bcount=fread( buf, memdiff , sizeof(char), stream )) == memdiff ) {
+  memcpy( tmp, *buf, *cap );
+  *cap = (*cap+MEM_OFFSET)*2 - MEM_OFFSET;
 
-    tmp = buf;
+  free(*buf);
+  *buf = tmp;
 
-    capacity += BASE_CAPACITY;
-    memdiff = BASE_CAPACITY;
 
-    buf = (char *) malloc( sizeof(char) * capacity );
+  return 0;
 
-    memcpy( buf, tmp, sizeof(char) * (capacity - memdiff) );
+}
 
-    free(tmp);
-    tmp = NULL;
+
+char *lazy_read( FILE *stream ) {
+
+  char *buf;
+  size_t cap;
+  int c, i;
+
+
+  cap = BASE_CAPACITY - MEM_OFFSET;
+  buf = malloc( cap );
+
+  for ( i = 0; ; i++ ) {
+
+    c = getc( stream );
+
+    if ( i >= cap ) {
+      if ( resize( &buf, &cap ) != 0 ) {
+        free( buf );
+        return NULL;
+      }
+    }
+
+    if ( c != EOF ) {
+      buf[i] = c;
+    }
+    else {
+      buf[i] = '\0';
+      break;
+    }
 
   }
 
 
   if ( ferror( stream ) ) {
     perror( "Error while reading input" );
-    free( buf);
+    free( buf );
     buf = NULL;
   }
-  else if ( bcount == 0 ) {
-
-    tmp = buf;
-
-    buf = (char *) malloc( sizeof(char) * (capacity + BASE_CAPACITY) );
-
-    memcpy( buf, tmp, sizeof(char) * capacity );
-
-    buf[ capacity + 1 ] = '\0';
-
-  }
-  else {
-
-    buf[ (capacity - memdiff) + bcount ] = '\0';
-
-  }
-
 
   return buf;
 
