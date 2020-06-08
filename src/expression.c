@@ -90,6 +90,11 @@ static syntax_tree_t *_unary_expression( token_t **tokens ) {
   if ( tree != NULL && (*tokens)->token.id == LSQUARE_TOKEN ) {
     square_bracket = (*tokens)++;
     tree = ST_mknode( square_bracket, tree, _compound_expression( tokens ) );
+
+    if ( tree->subtree[1] == NULL ) {
+      parse_throw( (const token_t *) *tokens );
+    }
+
     expect( (const token_t **) tokens, RSQUARE_TOKEN );
   }
 
