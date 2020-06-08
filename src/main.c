@@ -210,34 +210,67 @@ static void plot_tree( syntax_tree_t *node,
 }
 
 
-static void evalopts( int argc, char * const argv[], bool *v, char **fn ) {
+static int evalopts( int argc, char * const argv[], bool *v, char **e, char **fn ) {
 
-  struct option visualopt;
-  char *visualopt_name = "plot";
-  char *optstring = "+p";
+  struct option optv[3];
+  char *visualopt_name = "paren";
+  char *expopt_name = "expression";
+  char *fileopt_name = "file";
+  char *optstring = "+e:f:p";
+  char *usage_fmt = "Usage: %s [-p|--paren] [[-e|--expression] exp] [file]\n";
   int ch;
 
-  visualopt.name = visualopt_name;
-  visualopt.has_arg = 0;
-  visualopt.flag = NULL;
-  visualopt.val = 'p';
+  optv[0].name = visualopt_name;
+  optv[0].has_arg = 0;
+  optv[0].flag = NULL;
+  optv[0].val = 'p';
 
-  *v= true;
+  optv[1].name = expopt_name;
+  optv[1].has_arg = 1;
+  optv[1].flag = NULL;
+  optv[1].val = 'e';
 
-  while ( (ch = getopt_long( argc, argv, optstring, &visualopt, NULL )) > 0 ) {
-    /* Non-visual parentheses mode */
-    if ( ch == 'p' ) {
-      *v = false;
+  optv[2].name = fileopt_name;
+  optv[2].has_arg = 1;
+  optv[2].flag = NULL;
+  optv[2].val = 'f';
+
+  *v = true;
+
+  while ( (ch = getopt_long( argc, argv, optstring, optv, NULL )) > 0 ) {
+
+    switch ( ch ) {
+      case 'p':
+        *v = false;
+        break;
+
+      case 'e':
+        *e = malloc( sizeof(char) * (strlen(optarg) + 1) );
+        memcpy( *e, optarg, sizeof(char) * (strlen(optarg) + 1) );
+        break;
+
+      case 'f':
+        *fn = optarg;
+        break;
+
+      case '?':
+        fprintf(stderr, usage_fmt, argv[0]);
+        return 1;
+
+      default:
+        break;
     }
+
   }
 
 
-  if ( argc <= optind ) {
-    *fn = NULL;
+  if ( argc > optind ) {
+    fprintf( stderr, usage_fmt, argv[0] );
+    return 1;
   }
-  else {
-    *fn = argv[optind];
-  }
+
+
+  return 0;
 
 }
 
@@ -251,7 +284,12 @@ int main( int argc, char **argv ) {
   bool visual_mode;
 
 
-  evalopts( argc, argv, &visual_mode, &filename );
+  buf = NULL;
+  filename = NULL;
+
+  if ( evalopts( argc, argv, &visual_mode, &buf, &filename ) != 0 ) {
+    return 1;
+  }
 
   if ( filename == NULL ) {
     input_stream = stdin;
@@ -264,8 +302,10 @@ int main( int argc, char **argv ) {
   }
 
 
-  buf = lazy_read( input_stream );
-  fclose( input_stream );
+  if ( buf == NULL ) {
+    buf = lazy_read( input_stream );
+    fclose( input_stream );
+  }
 
   for ( ch = buf; *ch != ';' && *ch != '\0'; ch++ );
   *ch = '\0';

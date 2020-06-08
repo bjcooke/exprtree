@@ -27,19 +27,14 @@ or
 
 
 # How to run #
-### Bash ###
+### Argument ###
 
-	./exprtree <<<"6+7*8/2+*a"
-
-
-### Posix Shell ###
-
-	echo "6+7*8/2+*a" | ./exprtree
+	./exprtree -e '6+7*8/2+*a'
 
 
 ### File ###
 
-	./exprtree < example.txt
+	./exprtree -f example.txt
 
 
 
