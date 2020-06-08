@@ -92,6 +92,7 @@ static syntax_tree_t *_unary_expression( token_t **tokens ) {
     tree = ST_mknode( square_bracket, tree, _compound_expression( tokens ) );
 
     if ( tree->subtree[1] == NULL ) {
+      fprintf( stderr, "Error: Empty array subscript\n" );
       parse_throw( (const token_t *) *tokens );
     }
 
