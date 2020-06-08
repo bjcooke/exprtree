@@ -267,6 +267,8 @@ int main( int argc, char **argv ) {
   buf = lazy_read( input_stream );
   fclose( input_stream );
 
+	for ( ch = buf; *ch != ';' && *ch != '\0'; ch++ );
+	*ch = '\0';
 
   tree = parse_start( buf );
 
