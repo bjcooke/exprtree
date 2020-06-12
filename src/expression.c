@@ -20,7 +20,6 @@ static syntax_tree_t *_unary_expression( token_t **tokens ) {
 
   syntax_tree_t *tree, *branch;
   operator_token_t *op;
-  token_t *square_bracket;
 
 
   /* rewrite minus operator to be unary */
@@ -87,19 +86,6 @@ static syntax_tree_t *_unary_expression( token_t **tokens ) {
   }
 
 
-  if ( tree != NULL && (*tokens)->token.id == LSQUARE_TOKEN ) {
-    square_bracket = (*tokens)++;
-    tree = ST_mknode( square_bracket, tree, _compound_expression( tokens ) );
-
-    if ( tree->subtree[1] == NULL ) {
-      fprintf( stderr, "Error: Empty array subscript\n" );
-      parse_throw( (const token_t *) *tokens );
-    }
-
-    expect( (const token_t **) tokens, RSQUARE_TOKEN );
-  }
-
-
   return tree;
 
 }
@@ -109,6 +95,7 @@ static syntax_tree_t *_binary_expression( token_t **tokens, unsigned int prec ){
 
   syntax_tree_t *lbranch, *rbranch;
   operator_token_t *op;
+  token_t *square_bracket;
 
 
   lbranch = _unary_expression(tokens);
@@ -126,6 +113,18 @@ static syntax_tree_t *_binary_expression( token_t **tokens, unsigned int prec ){
     op = (operator_token_t *) (*tokens)++;
     lbranch = ST_mknode( (token_t *) op, lbranch );
 
+  }
+  /* Handle array subscript */
+  else if ( (*tokens)->token.id == LSQUARE_TOKEN ) {
+    square_bracket = (*tokens)++;
+    lbranch = ST_mknode( square_bracket, lbranch, _compound_expression(tokens) );
+
+    if ( lbranch->subtree[1] == NULL ) {
+      fprintf( stderr, "Error: Empty array subscript\n" );
+      parse_throw( (const token_t *) *tokens );
+    }
+
+    expect( (const token_t **) tokens, RSQUARE_TOKEN );
   }
 
 
