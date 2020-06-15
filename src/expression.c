@@ -128,16 +128,16 @@ static syntax_tree_t *_binary_expression( token_t **tokens, unsigned int prec ){
   }
   /* Handle accessors */
   else if ( (*tokens)->token.id == ARROW_TOKEN ||
-  					(*tokens)->token.id == DOT_TOKEN ) {
+            (*tokens)->token.id == DOT_TOKEN ) {
 
-		accessor = (*tokens)++;
+    accessor = (*tokens)++;
 
-		member = *tokens;
-		expect( (const token_t **) tokens, IDENT_TOKEN );
+    member = *tokens;
+    expect( (const token_t **) tokens, IDENT_TOKEN );
 
-		lbranch = ST_mknode( accessor, lbranch, ST_mknode( member ) );
+    lbranch = ST_mknode( accessor, lbranch, ST_mknode( member ) );
 
-	}
+  }
 
 
   while ( (*tokens)->token.id == OPERATOR_TOKEN && 
