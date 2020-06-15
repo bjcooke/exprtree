@@ -95,7 +95,7 @@ static syntax_tree_t *_binary_expression( token_t **tokens, unsigned int prec ){
 
   syntax_tree_t *lbranch, *rbranch;
   operator_token_t *op;
-  token_t *square_bracket;
+  token_t *square_bracket, *accessor, *member;
 
 
   lbranch = _unary_expression(tokens);
@@ -126,6 +126,18 @@ static syntax_tree_t *_binary_expression( token_t **tokens, unsigned int prec ){
 
     expect( (const token_t **) tokens, RSQUARE_TOKEN );
   }
+  /* Handle accessors */
+  else if ( (*tokens)->token.id == ARROW_TOKEN ||
+  					(*tokens)->token.id == DOT_TOKEN ) {
+
+		accessor = (*tokens)++;
+
+		member = *tokens;
+		expect( (const token_t **) tokens, IDENT_TOKEN );
+
+		lbranch = ST_mknode( accessor, lbranch, ST_mknode( member ) );
+
+	}
 
 
   while ( (*tokens)->token.id == OPERATOR_TOKEN && 

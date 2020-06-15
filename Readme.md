@@ -61,11 +61,11 @@ or
 # Limitations #
 
 * No checking of left operand of assignment operator.
+* No checking of left operand of accessor operator
 * No checking of operand of increment/decrement operator
 * No checking of operand of reference operator
 * No type checking of array subscript
 * No function calls
-* No union or struct accessing
 * No typecasting
 * No `sizeof` macro
 
