@@ -212,7 +212,11 @@ static void print_paren( syntax_tree_t *node ) {
       putchar(')');
     }
   }
-
+  else if ( node->t->token.id == COMMA_TOKEN ) {
+    print_paren(node->subtree[0]);
+    putchar(',');
+    print_paren(node->subtree[1]);
+  }
 
 }
 
