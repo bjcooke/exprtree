@@ -230,12 +230,13 @@ static void print_paren( syntax_tree_t *node ) {
 
 static int evalopts( int argc, char * const argv[], char **e, char **fn, bool *visual ) {
 
-  struct option optv[3];
+  struct option optv[4];
   char *expopt_name = "expression";
   char *fileopt_name = "file";
   char *nvopt_name = "paren";
-  char *optstring = "+e:f:p";
-  char *usage_fmt = "Usage: %s [-p|--paren] [[-e|--expression] exp] [[-f|--file] file]\n";
+  char *helpopt_name = "help";
+  char *optstring = "+e:f:ph";
+  char *usage_fmt = "Usage: %s [-p|--paren] [(-e|--expression) exp] [(-f|--file) file]\n";
   int ch;
 
 
@@ -254,6 +255,11 @@ static int evalopts( int argc, char * const argv[], char **e, char **fn, bool *v
   optv[2].flag = NULL;
   optv[2].val = 'p';
 
+  optv[3].name = helpopt_name;
+  optv[3].has_arg = 0;
+  optv[3].flag = NULL;
+  optv[3].val = 'h';
+
 
   *visual = true;
 
@@ -271,6 +277,11 @@ static int evalopts( int argc, char * const argv[], char **e, char **fn, bool *v
 
       case 'p':
         *visual = false;
+        break;
+
+      case 'h':
+        printf( usage_fmt, argv[0] );
+        return 1;
         break;
 
       case '?':
