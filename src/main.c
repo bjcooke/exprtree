@@ -349,6 +349,7 @@ int main( int argc, char **argv ) {
 	}
 	else {
 		print_paren( tree );
+		putchar('\n');
 	}
 
 
