@@ -65,7 +65,6 @@ or
 * No checking of operand of increment/decrement operator
 * No checking of operand of reference operator
 * No type checking of array subscript
-* No function calls
 * No typecasting
 * No `sizeof` macro
 
