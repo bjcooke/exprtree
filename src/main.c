@@ -200,17 +200,24 @@ static void print_paren( syntax_tree_t *node ) {
     print_paren(node->subtree[0]);
     print_token(node->t);
     print_paren(node->subtree[1]);
+
+    if ( node->t->token.id == LSQUARE_TOKEN ) {
+      putchar(']');
+    }
+
     putchar(')');
 
   }
   else if ( node->t->token.id == LPAREN_TOKEN ) {
     print_paren(node->subtree[0]);
 
+    putchar('(');
     if ( node->subtree[1] != NULL ) {
-      putchar('(');
       print_paren(node->subtree[1]);
       putchar(')');
     }
+    putchar(')');
+
   }
   else if ( node->t->token.id == COMMA_TOKEN ) {
     print_paren(node->subtree[0]);
