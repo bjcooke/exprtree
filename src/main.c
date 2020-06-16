@@ -149,13 +149,61 @@ static void plot_tree( syntax_tree_t *node,
 }
 
 
-static int evalopts( int argc, char * const argv[], char **e, char **fn ) {
+static void print_paren( syntax_tree_t *node ) {
 
-  struct option optv[2];
+  int i;
+
+
+  if ( node == NULL ) {
+    return;
+  }
+
+
+  if ( ST_isleaf(node) ) {
+
+    print_token( node->t );
+
+  }
+  else if ( node->t->token.id == OPERATOR_TOKEN ) {
+
+    putchar('(');
+
+    if ( node->t->operator.arity == 1  && node->t->operator.post == false ) {
+      print_token(node->t);
+    }
+
+    for ( i = 0; i < node->t->operator.arity; i++ ) {
+
+      if ( i == 1 ) {
+        print_token(node->t);
+      }
+      else if ( i == 2 ) {
+        putchar(':');
+      }
+
+      print_paren(node->subtree[i]);
+
+    }
+
+    if ( node->t->operator.arity == 1  && node->t->operator.post == true ) {
+      print_token(node->t);
+    }
+
+    putchar(')');
+
+  }
+
+}
+
+
+static int evalopts( int argc, char * const argv[], char **e, char **fn, bool *visual ) {
+
+  struct option optv[3];
   char *expopt_name = "expression";
   char *fileopt_name = "file";
-  char *optstring = "+e:f:";
-  char *usage_fmt = "Usage: %s [[-e|--expression] exp] [[-f|--file] file]\n";
+	char *nvopt_name = "paren";
+  char *optstring = "+e:f:p";
+  char *usage_fmt = "Usage: %s [-p|--paren] [[-e|--expression] exp] [[-f|--file] file]\n";
   int ch;
 
 
@@ -169,6 +217,13 @@ static int evalopts( int argc, char * const argv[], char **e, char **fn ) {
   optv[1].flag = NULL;
   optv[1].val = 'f';
 
+	optv[2].name = nvopt_name;
+	optv[2].has_arg = 0;
+	optv[2].flag = NULL;
+	optv[2].val = 'p';
+
+
+	*visual = true;
 
   while ( (ch = getopt_long( argc, argv, optstring, optv, NULL )) > 0 ) {
 
@@ -181,6 +236,10 @@ static int evalopts( int argc, char * const argv[], char **e, char **fn ) {
       case 'f':
         *fn = optarg;
         break;
+
+			case 'p':
+				*visual = false;
+				break;
 
       case '?':
         fprintf(stderr, usage_fmt, argv[0]);
@@ -209,13 +268,14 @@ int main( int argc, char **argv ) {
   syntax_tree_t *tree;
   FILE *input_stream;
   char *buf, *filename, *term_name, term_data[TBUFSIZE], **screen_buffer, *ch;
+	bool visual;
   int i;
 
 
   buf = NULL;
   filename = NULL;
 
-  if ( evalopts( argc, argv, &buf, &filename ) != 0 ) {
+  if ( evalopts( argc, argv, &buf, &filename, &visual ) != 0 ) {
     return 1;
   }
 
@@ -255,36 +315,41 @@ int main( int argc, char **argv ) {
   }
 
 
-  screen_buffer = (char **) malloc( sizeof(char *) * TERM_HEIGHT );
-
-  for ( i = 0; i < TERM_HEIGHT; i++ ) {
-    screen_buffer[i] = (char *) malloc( sizeof(char) * TERM_WIDTH );
-    screen_buffer[i][0] = '\0';
-    memset( screen_buffer[i] + 1, 0x3, sizeof(char) * (TERM_WIDTH - 1) );
-  }
-
-
-  plot_tree(tree, screen_buffer, TERM_WIDTH, TERM_WIDTH/2, 0);
-
-  putchar('\n');
-
-  for ( i = 0; i < TERM_HEIGHT; i++ ) {
-    for ( ch = screen_buffer[i] + TERM_WIDTH; *(ch - 1) == 0x3; ch-- );
-    ch[0] = '\n';
-    ch[1] = '\0';
-    printf("%s", screen_buffer[i]);
-  }
-
-  putchar('\n');
-
-
-  for ( i = 0; i < TERM_HEIGHT; i++ ) {
-    free( screen_buffer[i] );
-    screen_buffer[i] = NULL;
-  }
-
-  free( screen_buffer );
-  screen_buffer = NULL;
+	if ( visual == true ) {
+	  screen_buffer = (char **) malloc( sizeof(char *) * TERM_HEIGHT );
+	
+	  for ( i = 0; i < TERM_HEIGHT; i++ ) {
+	    screen_buffer[i] = (char *) malloc( sizeof(char) * TERM_WIDTH );
+	    screen_buffer[i][0] = '\0';
+	    memset( screen_buffer[i] + 1, 0x3, sizeof(char) * (TERM_WIDTH - 1) );
+	  }
+	
+	
+	  plot_tree(tree, screen_buffer, TERM_WIDTH, TERM_WIDTH/2, 0);
+	
+	  putchar('\n');
+	
+	  for ( i = 0; i < TERM_HEIGHT; i++ ) {
+	    for ( ch = screen_buffer[i] + TERM_WIDTH; *(ch - 1) == 0x3; ch-- );
+	    ch[0] = '\n';
+	    ch[1] = '\0';
+	    printf("%s", screen_buffer[i]);
+	  }
+	
+	  putchar('\n');
+	
+	
+	  for ( i = 0; i < TERM_HEIGHT; i++ ) {
+	    free( screen_buffer[i] );
+	    screen_buffer[i] = NULL;
+	  }
+	
+	  free( screen_buffer );
+	  screen_buffer = NULL;
+	}
+	else {
+		print_paren( tree );
+	}
 
 
   parse_clear();

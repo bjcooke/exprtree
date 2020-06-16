@@ -95,7 +95,7 @@ static syntax_tree_t *_binary_expression( token_t **tokens, unsigned int prec ){
 
   syntax_tree_t *lbranch, *rbranch;
   operator_token_t *op;
-  token_t *square_bracket, *accessor, *member;
+  token_t *square_bracket, *accessor, *member, *arg_paren;
 
 
   lbranch = _unary_expression(tokens);
@@ -138,6 +138,14 @@ static syntax_tree_t *_binary_expression( token_t **tokens, unsigned int prec ){
     lbranch = ST_mknode( accessor, lbranch, ST_mknode( member ) );
 
   }
+	/* Handle function call */
+	else if ( (*tokens)->token.id == LPAREN_TOKEN ) {
+		arg_paren = (*tokens)++;
+
+		lbranch = ST_mknode( arg_paren, lbranch, _compound_expression(tokens) );
+
+		expect( (const token_t **) tokens, RPAREN_TOKEN );
+	}
 
 
   while ( (*tokens)->token.id == OPERATOR_TOKEN && 
