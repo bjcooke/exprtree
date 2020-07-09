@@ -4,7 +4,7 @@ BEGIN {
   FS="[:\t]*"
   count = 0;
 
-  system("cat src/template/print_token_id.c.head")
+  system("cat @abs_top_srcdir@/src/template/print_token_id.c.head")
   system("")
 
   printf("static const char *_id_table[] = {\n")
@@ -27,6 +27,6 @@ END {
 
   printf("};\n")
 
-  system("cat src/template/print_token_id.c.tail")
+  system("cat @abs_top_srcdir@/src/template/print_token_id.c.tail")
   system("")
 }

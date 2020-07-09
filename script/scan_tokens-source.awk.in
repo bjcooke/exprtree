@@ -3,7 +3,7 @@
 BEGIN {
   FS="[:,\t]*"
 
-  system("cat src/template/scan_tokens.c.head")
+  system("cat @abs_top_srcdir@/src/template/scan_tokens.c.head")
   system("")
 }
 
@@ -32,6 +32,6 @@ BEGIN {
 }
 
 END {
-  system("cat src/template/scan_tokens.c.tail")
+  system("cat @abs_top_srcdir@/src/template/scan_tokens.c.tail")
   system("")
 }
