@@ -5,7 +5,7 @@ BEGIN {
   printf("#ifndef _TOKEN_H\n")
   printf("#define _TOKEN_H\n\n")
 
-	printf("#include <stdbool.h>\n")
+  printf("#include <stdbool.h>\n")
   printf("#include <stdint.h>\n")
   printf("#include <stdio.h>\n")
   printf("#include \"assoc.h\"\n")
