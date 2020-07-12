@@ -36,12 +36,12 @@ source:		$(dycsrc)
 
 @srcdir@/include/%.h:	script/%-header.awk @srcdir@/include
 	@$(AWK) -f $< @srcdir@/src/template/tokens.tbl > $@
-	@$(PRINTF) "AWK\t$(notdir $^)\n\t|\n\t*=> $(notdir $@)\n\n"
+	@$(PRINTF) "AWK\t$(notdir $<)\n\t|\n\t*=> $(notdir $@)\n\n"
 
 @srcdir@/src/%.c:	script/%-source.awk
 	@$(RM) -f $@
 	@$(AWK) -f $< @srcdir@/src/template/tokens.tbl > $@
-	@$(PRINTF) "AWK\t$(notdir $^)\n\t|\n\t*=> $(notdir $@)\n\n"
+	@$(PRINTF) "AWK\t$(notdir $<)\n\t|\n\t*=> $(notdir $@)\n\n"
 
 ./%.o:	@srcdir@/src/%.c source headers
 	@$(CC) $(CFLAGS) -c $< -o $@
