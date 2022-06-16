@@ -22,7 +22,10 @@ or
 	make distclean
 
 
-# Dependencies #
+# Build Dependencies #
+* autoconf
+* gnu make
+* gnu awk
 * terminfo (ncurses is fine)
 
 
