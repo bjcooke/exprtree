@@ -23,10 +23,8 @@ or
 
 
 # Build Dependencies #
-* autoconf
 * gnu make
-* gnu awk
-* terminfo (ncurses is fine)
+* autoconf
 
 
 # How to run #
