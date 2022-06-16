@@ -14,9 +14,16 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS([getopt.h stdbool.h term.h])
 dnl
 [
+
+if [ -f /usr/lib/libtermcap.a -o -f /lib/libtermcap.a ]; then
+	tlib=-ltermcap
+else
+	tlib=-ltinfo
+fi
+
 CFLAGS="$CFLAGS -Wall -pedantic --std=c99"
 LDFLAGS="$LDFLAGS -Wall -pedantic"
-LIBS="$LIBS `$ac_cv_path_pkgconf --libs tinfo`"
+LIBS="$LIBS $tlib"
 ]
 dnl
 AC_CONFIG_FILES([
