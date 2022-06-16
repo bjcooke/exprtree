@@ -8,7 +8,7 @@ BEGIN {
 }
 
 /^([A-Za-z_][A-Za-z0-9_]*):?/ {
-  SED="@SED@ -f script/scan_tokens-source.sed"
+  SED="@SED@ -E -f script/scan_tokens-source.sed"
 
   printf("    else if ( ( len = match_%s(s", $1)
 
