@@ -1,6 +1,5 @@
 CC=@CC@
 CFLAGS=-iquote @srcdir@/include @CFLAGS@
-LD=@CC@
 LDFLAGS=@LDFLAGS@
 LIBS=@LIBS@
 AWK=@AWK@
@@ -17,8 +16,8 @@ obj=$(csrc:@srcdir@/src/%.c=./%.o)
 
 all:	exprtree
 
-exprtree:	./main.o $(obj)
-	$(LD) $(LDFLAGS) -o $@ $^ $(LIBS)
+exprtree:	$(obj)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 help:
 	@ $(PRINTF) "Options:\n\n"
